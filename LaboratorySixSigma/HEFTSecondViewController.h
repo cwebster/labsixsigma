@@ -24,6 +24,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *allowableTotalError;
 @property (weak, nonatomic) IBOutlet UILabel *observedTotalError;
 @property (weak, nonatomic) IBOutlet UIButton *calculateButton;
+@property (weak, nonatomic) IBOutlet UIButton *shareButton;
 
 @property (nonatomic, retain) HEFTAppDelegate *myAppDelegate;
 @property (nonatomic, retain) HEFTFirstViewController *rootViewController;

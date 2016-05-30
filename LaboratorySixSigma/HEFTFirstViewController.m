@@ -8,6 +8,7 @@
 
 #import "HEFTFirstViewController.h"
 #import "HEFTQualityCalculator.h"
+#import <QuartzCore/QuartzCore.h>
 
 
 @interface HEFTFirstViewController ()
@@ -21,6 +22,7 @@
 @synthesize interIndividualVariationField = _interIndividualVariationField;
 @synthesize intraIndividualVarationField = _intraIndividualVarationField;
 @synthesize myKeys = _myKeys;
+@synthesize calculateButton = _calculateButton;
 
 - (void)viewDidLoad
 {
@@ -41,6 +43,18 @@
     _myKeys = [_resultsDictionary allKeys];
     _resultsTable.bounces = YES;
     _resultsTable.scrollEnabled = YES;
+    _resultsTable.layer.borderWidth = 1.0;
+   
+    
+    // add a border to the calculate button
+    
+    [[_calculateButton layer] setCornerRadius:8.0f];
+    
+    [[_calculateButton layer] setMasksToBounds:YES];
+    
+    [[_calculateButton layer] setBorderWidth:1.0f];
+    
+    _calculateButton.layer.borderColor = [UIColor orangeColor].CGColor;
 
 }
 

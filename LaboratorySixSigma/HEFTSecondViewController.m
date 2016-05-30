@@ -33,6 +33,7 @@
 @synthesize sigmaScoreLabel = _sigmaScoreLabel;
 @synthesize specificationsEdited = _specificationsEdited;
 @synthesize calculateButton = _calculateButton;
+@synthesize shareButton = _shareButton;
 
 
 - (void)viewDidAppear:(BOOL)animated{
@@ -105,6 +106,10 @@
     [[_calculateButton layer] setBorderWidth:1.0f];
     
     _calculateButton.layer.borderColor = [UIColor orangeColor].CGColor;
+    
+    
+    // hide sharebutton
+    _shareButton.hidden = true;
     
 }
 
@@ -235,6 +240,11 @@
         
     }
     
+    //if we've edited the specifications we need to calculate the total allowable error
+    if (_specificationsEdited == true) {
+        [self calculateTotalAllowableError];
+    }
+    
     
     HEFTQualityCalculator *calculator = [[HEFTQualityCalculator alloc]init];
     
@@ -258,13 +268,6 @@
     NSString *sigStr = [formatter stringFromNumber:[results objectForKey:@"Sigma"]];
     
     NSNumber *sigma = [results objectForKey:@"Sigma"];
-    
-    
-    //if we've edited the specifications we need to calculate the total allowable error
-    if (_specificationsEdited == true) {
-        [self calculateTotalAllowableError];
-    }
-    
     
     // Highlight if in or out of specifications
     //sigma score
@@ -298,6 +301,9 @@
     
     [_observedTotalError setText:testr];
     [_sigmaScoreLabel setText:sigStr];
+    
+    
+    _shareButton.hidden = false;
     
 }
 

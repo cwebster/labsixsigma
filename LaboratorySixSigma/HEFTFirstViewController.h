@@ -14,10 +14,12 @@
 @property (strong) IBOutlet UITableView *resultsTable;
 @property (weak, nonatomic) IBOutlet UITextField *intraIndividualVarationField;
 @property (weak, nonatomic) IBOutlet UITextField *interIndividualVariationField;
+@property (weak, nonatomic) IBOutlet UIButton *calculateButton;
+
 @property (strong) NSMutableDictionary *resultsDictionary;
 @property (strong) NSArray *myKeys;
 
 - (IBAction)calculateSpecificationsButton:(id)sender;
--(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
 
 @end
