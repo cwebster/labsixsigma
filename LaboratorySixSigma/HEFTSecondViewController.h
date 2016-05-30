@@ -23,10 +23,14 @@
 @property (weak, nonatomic) IBOutlet UILabel *sigmaScoreLabel;
 @property (weak, nonatomic) IBOutlet UILabel *allowableTotalError;
 @property (weak, nonatomic) IBOutlet UILabel *observedTotalError;
+@property (weak, nonatomic) IBOutlet UIButton *calculateButton;
+
 @property (nonatomic, retain) HEFTAppDelegate *myAppDelegate;
 @property (nonatomic, retain) HEFTFirstViewController *rootViewController;
+@property (nonatomic) BOOL specificationsEdited;
 
 
 - (IBAction)calculate:(id)sender;
+- (IBAction)hidePicker:(id)sender;
 
 @end

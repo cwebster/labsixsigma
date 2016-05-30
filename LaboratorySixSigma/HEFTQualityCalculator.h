@@ -15,4 +15,6 @@
 
 -(NSDictionary *) totalErrorAndSigmaCalculatorWithBias:(double)bias cv:(double)cv totalError:(double)totalError;
 
+-(NSNumber *) totalError:(double)bias cv:(double)cv;
+
 @end

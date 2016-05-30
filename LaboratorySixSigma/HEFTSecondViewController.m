@@ -31,6 +31,8 @@
 @synthesize allowableTotalError = _allowableTotalError;
 @synthesize observedTotalError = _observedTotalError;
 @synthesize sigmaScoreLabel = _sigmaScoreLabel;
+@synthesize specificationsEdited = _specificationsEdited;
+@synthesize calculateButton = _calculateButton;
 
 
 - (void)viewDidAppear:(BOOL)animated{
@@ -93,6 +95,17 @@
     //round some corners
     self.sigmaScoreLabel.layer.cornerRadius = 8;
     self.observedTotalError.layer.cornerRadius=8;
+    
+    // add a border to the calculate button
+    
+    [[_calculateButton layer] setCornerRadius:8.0f];
+    
+    [[_calculateButton layer] setMasksToBounds:YES];
+    
+    [[_calculateButton layer] setBorderWidth:1.0f];
+    
+    _calculateButton.layer.borderColor = [UIColor orangeColor].CGColor;
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -109,7 +122,7 @@
 // return the picker frame based on its size, positioned at the bottom of the page
 - (CGRect)pickerFrameWithSize:(CGSize)size
 {
-	CGRect screenRect = [[UIScreen mainScreen] applicationFrame];
+    CGRect screenRect = [UIScreen mainScreen].bounds;
 	CGRect pickerRect = CGRectMake(	0.0,
                                    screenRect.size.height - size.height+58.0,
                                    screenRect.size.width,
@@ -119,9 +132,6 @@
 
 - (void)createPicker
 {
-    
-    
-    
 	// note we are using CGRectZero for the dimensions of our picker view,
 	// this is because picker views have a built in optimum size,
 	// you just need to set the correct origin in your view.
@@ -145,7 +155,6 @@
 	// add this picker to our view controller, initially hidden
 	_myPickerView.hidden = NO;
 	[self.view addSubview:_myPickerView];
-    
     
 }
 
@@ -219,6 +228,14 @@
 }
 
 - (IBAction)calculate:(id)sender {
+    
+    if (![_observedCVField hasText] || ![_observedBIASField hasText]) {
+        [self showErrorBox];
+        return;
+        
+    }
+    
+    
     HEFTQualityCalculator *calculator = [[HEFTQualityCalculator alloc]init];
     
     NSDictionary *results = [calculator totalErrorAndSigmaCalculatorWithBias:[[_observedBIASField text]doubleValue]  cv:[[_observedCVField text]doubleValue]  totalError:[[_allowableTotalError text]doubleValue] ];
@@ -241,6 +258,12 @@
     NSString *sigStr = [formatter stringFromNumber:[results objectForKey:@"Sigma"]];
     
     NSNumber *sigma = [results objectForKey:@"Sigma"];
+    
+    
+    //if we've edited the specifications we need to calculate the total allowable error
+    if (_specificationsEdited == true) {
+        [self calculateTotalAllowableError];
+    }
     
     
     // Highlight if in or out of specifications
@@ -277,4 +300,38 @@
     [_sigmaScoreLabel setText:sigStr];
     
 }
+
+
+-(IBAction)hidePicker:(id)sender {
+    
+    [_myPickerView setHidden:true];
+    _specificationsEdited = true;
+    
+    _label.text = [NSString stringWithFormat:@"%s ", "Self Calculated"];
+    
+}
+
+-(void)calculateTotalAllowableError {
+    HEFTQualityCalculator *calculator = [[HEFTQualityCalculator alloc]init];
+    
+    NSNumber *te = [calculator totalError:[[_allowableBiasField text] doubleValue] cv:[[_allowableCVField text] doubleValue]];
+    
+    [_allowableTotalError setText:[te stringValue]];
+    
+}
+
+-(void)showErrorBox {
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"No Experimental Data"
+                                                                   message:@"Enter your observed %Bias and %CV"
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction * action) {}];
+    
+    [alert addAction:defaultAction];
+    [self presentViewController:alert animated:YES completion:nil];
+    
+}
+
+
 @end

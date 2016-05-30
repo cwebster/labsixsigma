@@ -51,6 +51,10 @@
     
 }
 
+-(NSNumber *) totalError:(double)bias cv:(double)cv {
+    return [NSNumber numberWithDouble:bias + (2 * cv)];
+}
+
 
 
 @end

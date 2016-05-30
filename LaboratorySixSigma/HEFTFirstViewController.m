@@ -58,33 +58,34 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     // Return the number of sections.
-    
     return [_myKeys count];
-
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     NSString *title = [_myKeys objectAtIndex:section];
-    
     return title;
-    
-    
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    
     NSArray * sortedKeys = [_resultsDictionary objectForKey:[_myKeys objectAtIndex:section]];
-    
-   // NSArray * sortedKeys = [[[_resultsDictionary allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)]objectAtIndex:section];
-    
-   return [sortedKeys count];
+    return [sortedKeys count];
 }
 
-//- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
-//     return _myKeys;
-//}
+
+- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
+{
+
+    // Text Color
+    UITableViewHeaderFooterView *header = (UITableViewHeaderFooterView *)view;
+    [header.textLabel setTextColor:[UIColor whiteColor]];
+    
+    // Another way to set the background color
+    // Note: does not preserve gradient effect of original header
+    header.contentView.backgroundColor = [UIColor orangeColor];
+    
+}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
@@ -112,7 +113,7 @@
     
     NSDictionary *specification = [ _resultsDictionary objectForKey:[_myKeys objectAtIndex:indexPath.section]];
     
-    int resultsIndex = [indexPath indexAtPosition:[indexPath length] - 1];
+    NSUInteger resultsIndex = [indexPath indexAtPosition:[indexPath length] - 1];
     
     if(resultsIndex == 0) {
         
